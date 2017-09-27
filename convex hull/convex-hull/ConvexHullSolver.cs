@@ -32,6 +32,7 @@ namespace _2_convex_hull
         public void Solve(List<System.Drawing.PointF> pointList)
         {
             // TODO: Insert your code here
+			// This is my test commit
             throw new NotImplementedException();
             //This is a test from windows
         }
