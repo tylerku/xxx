@@ -33,6 +33,7 @@ namespace _2_convex_hull
         {
             // TODO: Insert your code here
             throw new NotImplementedException();
+            //This is a test from windows
         }
     }
 }
