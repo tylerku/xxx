@@ -44,7 +44,7 @@ namespace _1_convex_hull
 
         public ConvexHull RightHalf()
         {
-			int half_size_ceiling = ((this.PointCount() + 1) / 2);
+            int half_size_ceiling = ((this.PointCount() + 1) / 2);
             List<PointF> right_points = points.GetRange(half_size_ceiling, this.PointCount() - half_size_ceiling);
             return new ConvexHull(right_points);
 		}
@@ -141,7 +141,7 @@ namespace _1_convex_hull
 
             this.left_point = left_p;
             this.right_point = right_p;
-        }
+        } 
 
         public void SetLeftPoint(PointF newP){
             left_point = newP;
@@ -160,36 +160,60 @@ namespace _1_convex_hull
         }
 
         public bool IsUpperTangentTo(ConvexHull left_hull, ConvexHull right_hull){
-            foreach (PointF point in left_hull.GetPoints()){
-                double tangentY = GetTangentSlope() * point.X + YIntercept(); // Tangent Y value at Point's X
-				if (point.Y <= tangentY){
-                    return false;
+
+            if (left_hull.PointCount() > 1)
+            {
+                foreach (PointF point in left_hull.GetPoints())
+                {
+                    double tangentY = GetTangentSlope() * point.X + YIntercept(); // Tangent Y value at Point's X
+                    if (point.Y <= tangentY)
+                    {
+                        return false;
+                    }
                 }
             }
 
-            foreach (PointF point in right_hull.GetPoints()){
-                double tangentY = GetTangentSlope() * point.X + YIntercept(); // Tangent Y value at Point's X
-				if (point.Y <= tangentY){
-                    return false;
+            if (right_hull.PointCount() > 1)
+            {
+                foreach (PointF point in right_hull.GetPoints())
+                {
+                    double tangentY = GetTangentSlope() * point.X + YIntercept(); // Tangent Y value at Point's X
+                    if (point.Y <= tangentY)
+                    {
+                        return false;
+                    }
                 }
             }
+
             return true;
         }
 
         public bool IsLowerTangentTo(ConvexHull left_hull, ConvexHull right_hull){
-            foreach (PointF point in left_hull.GetPoints()){
-                double tangentY = GetTangentSlope() * point.X + YIntercept(); // Tangent Y value at Point's X
-                if (point.Y >= tangentY){
-                    return false;
+
+            if (left_hull.PointCount() > 1)
+            {
+                foreach (PointF point in left_hull.GetPoints())
+                {
+                    double tangentY = GetTangentSlope() * point.X + YIntercept(); // Tangent Y value at Point's X
+                    if (point.Y >= tangentY)
+                    {
+                        return false;
+                    }
                 }
             }
 
-            foreach (PointF point in right_hull.GetPoints()){
-                double tangentY = GetTangentSlope() * point.X + YIntercept(); // Tangent Y value at Point's X
-				if (point.Y >= tangentY){
-                    return false;
+            if (right_hull.PointCount() > 1)
+            {
+                foreach (PointF point in right_hull.GetPoints())
+                {
+                    double tangentY = GetTangentSlope() * point.X + YIntercept(); // Tangent Y value at Point's X
+                    if (point.Y >= tangentY)
+                    {
+                        return false;
+                    }
                 }
             }
+
             return true;
         }
 
@@ -202,5 +226,5 @@ namespace _1_convex_hull
             return intercept;
         }
 	}
-
+   
 }
