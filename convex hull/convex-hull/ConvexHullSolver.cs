@@ -217,6 +217,11 @@ namespace _2_convex_hull
         double GetSlopeFromPoints(PointF p1, PointF p2){
             return (p1.Y - p2.Y) / (p1.X - p2.X);
         }
+
+        void DrawConvexHull(ConvexHull hull){
+            Graphics gfx = pictureBoxView.CreateGraphics();
+            gfx.DrawLines(Pens.Blue, hull.GetPoints().ToArray());
+        }
     }
 }
 
