@@ -111,11 +111,10 @@ namespace _2_convex_hull
         TangentLine FindUpperTangent(ConvexHull left_hull, ConvexHull right_hull){
             PointF tangent_left_point = left_hull.GetRightmostPoint();
             PointF tangent_right_point = right_hull.GetLeftmostPoint();
-            TangentLine upper_tangent = new TangentLine();
+            TangentLine upper_tangent = new TangentLine(tangent_left_point, tangent_right_point);
             double old_slope = GetSlopeFromPoints(tangent_left_point, tangent_right_point);
                              
-            while (!upper_tangent.IsUpperTangentTo(left_hull, right_hull))
-            {
+            while (!upper_tangent.IsUpperTangentTo(left_hull, right_hull)){
 
 				bool temp_upper_left_point_found = false;
 				bool temp_upper_right_point_found = false;
@@ -125,88 +124,78 @@ namespace _2_convex_hull
                     PointF next_point = left_hull.NextCounterClockwisePoint(tangent_left_point);
                     double new_slope = GetSlopeFromPoints(next_point, tangent_right_point);
                     if(new_slope >= old_slope){
-                        tangent_left_point = left_hull.NextCounterClockwisePoint(tangent_left_point);
+                        tangent_left_point = next_point;
                         old_slope = new_slope;
                         continue;
                     } else {
+                        upper_tangent.SetLeftPoint(tangent_left_point);
                         temp_upper_left_point_found = true;
                     }
 
                 }
 
-                while (upper_right_point_found == false)
+                while (temp_upper_right_point_found == false)
                 {
-                    //TODO   
+                    PointF next_point = right_hull.NextClockwisePoint(tangent_right_point);
+                    double new_slope = GetSlopeFromPoints(tangent_left_point, next_point);
+                    if(new_slope <= old_slope){
+                        tangent_right_point = next_point;
+                        old_slope = new_slope;
+                        continue;
+                    } else {
+                        upper_tangent.SetRightPoint(tangent_right_point);
+                        temp_upper_right_point_found = true;
+                    }
                 }
             }
 
-			return new TangentLine(tangent_left_point, tangent_right_point);
+            return upper_tangent;
 
 		}
 
         TangentLine FindLowerTangent(ConvexHull left_hull, ConvexHull right_hull)
         {
-			PointF left_point;
-			PointF right_point;
-			bool lower_left_point_found = false;
-			bool lower_right_point_found = false;
-			TangentLine lower_tangent = new TangentLine();
-
-
-			/* Find the left and right points if either of the hulls.Count is < 3 */
-
-			if (left_hull.PointCount() == 1) {
-				left_point = left_hull.GetPoints()[0];
-				lower_left_point_found = true;
-			}
-			
-			if (right_hull.PointCount() == 1) {
-				right_point = right_hull.GetPoints()[0];
-				lower_right_point_found = true;
-			}
-
-			/* If both left and right are set, then we are done */
-
-			if (lower_left_point_found && lower_right_point_found)
-			{
-				lower_tangent.setLeftPoint(left_point);
-				lower_tangent.setRightPoint(right_point);
-				return lower_tangent;
-			}
-
-			/* Get the initial values of our leftmost and rightmost points */
-
-			if (left_point.IsEmpty)
-			{
-				left_point = left_hull.GetRightmostPoint();
-			}
-			if (right_point.IsEmpty)
-			{
-				right_point = right_hull.GetLeftmostPoint();
-			}
+			PointF tangent_left_point = left_hull.GetRightmostPoint();
+			PointF tangent_right_point = right_hull.GetLeftmostPoint();
+            TangentLine lower_tangent = new TangentLine(tangent_left_point, tangent_right_point);
+            double old_slope = GetSlopeFromPoints(tangent_left_point, tangent_right_point);
 
             while(!lower_tangent.IsLowerTangentTo(left_hull, right_hull)){
-				lower_left_point_found = false;
-				lower_right_point_found = false;
+				
+                bool temp_lower_left_point_found = false;
+				bool temp_lower_right_point_found = false;
 
-				while (lower_left_point_found == false)
+				while (temp_lower_left_point_found == false)
 				{
-                    //TODO
+                    PointF next_point = left_hull.NextClockwisePoint(tangent_left_point);
+                    double new_slope = GetSlopeFromPoints(next_point, tangent_right_point);
+                    if (new_slope <= old_slope){
+                        tangent_left_point = next_point;
+                        old_slope = new_slope;
+                        continue;
+                    } else {
+                        lower_tangent.SetLeftPoint(tangent_left_point);
+                        temp_lower_left_point_found = true;
+                    }
                 }
 
-				while (lower_right_point_found == false)
+				while (temp_lower_right_point_found == false)
 				{
-					//TODO   
+                    PointF next_point = right_hull.NextCounterClockwisePoint(tangent_right_point);
+                    double new_slope = GetSlopeFromPoints(tangent_left_point, next_point);
+                    if (new_slope >= old_slope)
+                    {
+                        tangent_right_point = next_point;
+                        old_slope = new_slope;
+                        continue;
+                    } else {
+                        lower_tangent.SetRightPoint(tangent_right_point);
+                        temp_lower_right_point_found = true;
+                    }
 				}
             }
 
             return lower_tangent;
-
-			
-
-
-			/* Find the left and right lower points if either of the hulls.Count is < 3 */
-
 
 		}
 
