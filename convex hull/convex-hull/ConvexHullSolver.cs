@@ -219,8 +219,20 @@ namespace _2_convex_hull
         }
 
         void DrawConvexHull(ConvexHull hull){
-            Graphics gfx = pictureBoxView.CreateGraphics();
-            gfx.DrawLines(Pens.Blue, hull.GetPoints().ToArray());
+            List<PointF> points = hull.GetPoints();
+            PointF initial_point = points[0];
+            PointF previous_point = initial_point;
+            Pen pen = new Pen(Brushes.Black);
+
+            for(int i = 1; i < hull.PointCount(); i++)
+            {
+                PointF current_point = hull.GetPoints()[i];
+                g.DrawLine(pen, previous_point, current_point);
+                previous_point = current_point;
+            }
+
+            g.DrawLine(pen, previous_point, initial_point);
+
         }
     }
 }
