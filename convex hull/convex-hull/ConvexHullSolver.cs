@@ -68,38 +68,43 @@ namespace _2_convex_hull
                                                   TangentLine lower_tangent,
                                                   ConvexHull left_hull,
                                                   ConvexHull right_hull){
-            List<PointF> newPoints = new List<PointF>();
+			List<PointF> newPoints = new List<PointF>();
             PointF current_point = lower_tangent.GetLeftPoint();
             newPoints.Add(current_point);
             current_point = left_hull.NextClockwisePoint(current_point);
+            bool tangents_share_left_point = upper_tangent.GetLeftPoint().Equals(lower_tangent.GetLeftPoint());
 
-            while(!current_point.Equals(upper_tangent.GetLeftPoint())){
-                newPoints.Add(current_point);
-                current_point = left_hull.NextClockwisePoint(current_point);
-            }
+            if (!tangents_share_left_point)
+            {
+                while (!current_point.Equals(upper_tangent.GetLeftPoint())) {
+                    newPoints.Add(current_point);
+                    current_point = left_hull.NextClockwisePoint(current_point);
+                }
 
-            /* Don't want to add the point when left point of lower_tangent ==
-             * left point of upper_tangent becuase the point was already added */
-            if(!newPoints.Contains(current_point)){
-                newPoints.Add(current_point);
+                /* Don't want to add the point when left point of lower_tangent ==
+                 * left point of upper_tangent becuase the point was already added */
+                if (!newPoints.Contains(current_point)) {
+                    newPoints.Add(current_point);
+                }
             }
 
             current_point = upper_tangent.GetRightPoint();
             newPoints.Add(current_point);
             current_point = right_hull.NextClockwisePoint(current_point);
+            bool tangents_share_right_point = upper_tangent.GetRightPoint().Equals(lower_tangent.GetRightPoint());
 
-            while(!current_point.Equals(lower_tangent.GetRightPoint())){
-                newPoints.Add(current_point);
-                current_point = right_hull.NextClockwisePoint(current_point);
+            if (!tangents_share_right_point){
+				while (!current_point.Equals(lower_tangent.GetRightPoint())){
+					newPoints.Add(current_point);
+					current_point = right_hull.NextClockwisePoint(current_point);
+				}
+
+				/* Don't want to add the point when right point of upper_tangent ==
+                 * right point of lower_tangent becuase the point was already added */
+				if (!newPoints.Contains(current_point)) {
+					newPoints.Add(current_point);
+				}
             }
-
-			/* Don't want to add the point when right point of upper_tangent ==
-			 * right point of lower_tangent becuase the point was already added */
-			if(!newPoints.Contains(current_point)){
-                newPoints.Add(current_point);
-            }
-
-
             ConvexHull createdHull = new ConvexHull(newPoints, right_hull.GetRightmostPoint(), left_hull.GetLeftmostPoint());
 			return createdHull;
         }
