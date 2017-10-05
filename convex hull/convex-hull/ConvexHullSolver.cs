@@ -9,11 +9,6 @@ using _1_convex_hull;
 namespace _2_convex_hull
 {
 
-    class Line {
-        PointF p1;
-        PointF p2;
-    }
-
     class ConvexHullSolver
     {
 

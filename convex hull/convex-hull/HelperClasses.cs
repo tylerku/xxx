@@ -37,14 +37,14 @@ namespace _1_convex_hull
 
         public ConvexHull LeftHalf()
         {
-            int half_size_ceiling = (this.PointCount() + 1 / 2);
+            int half_size_ceiling = ((this.PointCount() + 1) / 2);
             List<PointF> left_points = points.GetRange(0, half_size_ceiling);
             return new ConvexHull(left_points);
         }
 
         public ConvexHull RightHalf()
         {
-			int half_size_ceiling = (this.PointCount() + 1 / 2);
+			int half_size_ceiling = ((this.PointCount() + 1) / 2);
             List<PointF> right_points = points.GetRange(half_size_ceiling, this.PointCount() - half_size_ceiling);
             return new ConvexHull(right_points);
 		}
@@ -141,7 +141,7 @@ namespace _1_convex_hull
 
             this.left_point = left_p;
             this.right_point = right_p;
-        } 
+        }
 
         public void SetLeftPoint(PointF newP){
             left_point = newP;
@@ -202,5 +202,5 @@ namespace _1_convex_hull
             return intercept;
         }
 	}
-   
+
 }
